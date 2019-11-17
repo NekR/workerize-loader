@@ -130,8 +130,8 @@ loader.pitch = function(request) {
 			return cb(null, `
 				var addMethods = require(${loaderUtils.stringifyRequest(this, path.resolve(__dirname, 'rpc-wrapper.js'))})
 				var methods = ${JSON.stringify(exports)}
-				module.exports = function() {
-					var w = new Worker(${workerUrl}, { name: ${JSON.stringify(filename)} })
+				module.exports = function(preloaded) {
+					var w = preloaded || new Worker(${workerUrl}, { name: ${JSON.stringify(filename)} })
 					addMethods(w, methods)
 					${ options.ready ? 'w.ready = new Promise(function(r) { w.addEventListener("ready", function(){ r(w) }) })' : '' }
 					return w
